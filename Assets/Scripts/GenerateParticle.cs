@@ -15,17 +15,23 @@ public class GenerateParticle : MonoBehaviour
 
     void Update()
     {
-        //if (Input.GetMouseButtonDown(0)) // cuando pulsemos el click izquierdo
-        //{
-        //    Vector3 screenCoords = Input.mousePosition; //coordenadas de pantalla
-        //    screenCoords.z = 10; //
-        //    Vector3 gameCoords = _cam.ScreenToWorldPoint(screenCoords); // transformamos las coordenadas de la pantalla a coordenadas de mundo
-        //    Instantiate(particlePrefab, gameCoords,Quaternion.identity); // instanciamos la bola en las coordenadas donde cliqueamos
-        //}
+#if UNITY_EDITOR_WIN || UNITY_STANDALONE //PARA QUE FUNCIONE EN PC
 
-        foreach(Touch touch in Input.touches) // por cada toque que demos
+        //PC
+        if (Input.GetMouseButtonDown(0)) // cuando pulsemos el click izquierdo
         {
-            if(touch.phase == TouchPhase.Began) // Began es el primer toque que das en la pantalla
+            Vector3 screenCoords = Input.mousePosition; //coordenadas de pantalla
+            screenCoords.z = 10; //
+            Vector3 gameCoords = _cam.ScreenToWorldPoint(screenCoords); // transformamos las coordenadas de la pantalla a coordenadas de mundo
+            Instantiate(particlePrefab, gameCoords, Quaternion.identity); // instanciamos la bola en las coordenadas donde cliqueamos
+        }
+
+#elif UNITY_ANDROID
+
+        //ANDROID
+        foreach (Touch touch in Input.touches) // por cada toque que demos
+        {
+            if (touch.phase == TouchPhase.Began) // Began es el primer toque que das en la pantallaS
             {
                 Vector3 screenCoords = touch.position; //coordenadas de la pantalla
                 screenCoords.z = 10;
@@ -35,5 +41,6 @@ public class GenerateParticle : MonoBehaviour
 
             }
         }
+#endif
     }
 }
